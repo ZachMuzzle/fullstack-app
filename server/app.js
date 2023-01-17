@@ -14,7 +14,15 @@ app.use(express.urlencoded({extended: false}));
 
 // create
 app.post('/insert', (request,response) => {
+    // console.log(request.body);
+    const {name}  = request.body // just grabs the name
+    const db = DbService.getDbServiceInstance();
 
+    const result = db.newName(); /* Change this back to original this is for testing */
+
+    result
+    .then(data => response.json({success: true}))
+    .catch(err => console.log(err));
 });
 // read
 // Only actives with URL has /getAll at end

@@ -40,6 +40,47 @@ class DbService {
             console.log(error);
         }
     }
+
+    async insertNewName(name) {
+        try {
+            const dateAdded = new Date();
+            console.log("After date: " + name)
+            const insertId = await new Promise((resolve, reject) => {
+                const query = "INSERT INTO names (name, data_added) VALUES (?, ?);"; //? ? is used to avoid sql injection
+                console.log("AFTER QUERY!!!!")
+                connection.query(query, [name, dateAdded] ,(err, result) => {
+                    if(err) reject(new Error(err.message) + "\n Error Happened!!!!!!!");
+                    resolve(result.insertId);
+                })
+            });
+
+            console.log(insertId);
+            return insertId;
+            
+        } catch (error) {
+            console.log(error + "HELLO I WAS CALLED");
+        }
+    }
+
+    // Test to see if database connects with code
+    async newName() {
+
+        try {
+        const response = await new Promise((resolve, reject) => {
+        const query = "INSERT INTO names (name, date_added) VALUES ('Jim', '09/10/1996');";
+        connection.query(query, (err, results) => {
+            if(err) reject(new Error(err.message));
+            resolve(results);
+        })
+    });
+
+    return response;
+
+}
+catch (error) {
+    console.log(error);
+}
+    }
 }
 
 module.exports = DbService; // can be used in other files
