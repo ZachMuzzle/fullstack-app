@@ -3,10 +3,8 @@
 ## How to get Started
 
 * I am following the process of creating a fullstack app with nodejs/express from this video [here](https://www.youtube.com/watch?v=vrj9AohVhPA)
-* I stopped @46.18 minute mark (I might need to review)
+* Completed on 01/19/23
 
-### Issues
-- When adding name error occurs through backend.
-- I have tested with another function and inserting sql works with **newName** function.
-- **insertNewName** does not seem to be working. Some issue with insertId (not sure) 
-- Next step for testing needs to be testing similar to **insertNewName**, but use **newName** as a test dummy. So `resolve(results.response)` for **newName**.
+### Things to maybe add
+- Update date for every updated item.
+- Delete/Truncate all the data button.

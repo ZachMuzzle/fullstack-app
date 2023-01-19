@@ -44,43 +44,81 @@ class DbService {
     async insertNewName(name) {
         try {
             const dateAdded = new Date();
-            console.log("After date: " + name)
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO names (name, data_added) VALUES (?, ?);"; //? ? is used to avoid sql injection
-                console.log("AFTER QUERY!!!!")
-                connection.query(query, [name, dateAdded] ,(err, result) => {
-                    if(err) reject(new Error(err.message) + "\n Error Happened!!!!!!!");
-                    resolve(result.insertId);
+                const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
+                connection.query(query, [name, dateAdded], (err, result) => {
+                    if(err) reject(new Error(err.message));
+                    resolve(result.insertId); // Just gets id of row
                 })
             });
 
             console.log(insertId);
-            return insertId;
-            
+            return {
+                id: insertId,
+                name: name,
+                dateAdded: dateAdded
+            }
+
         } catch (error) {
-            console.log(error + "HELLO I WAS CALLED");
+            console.log(error);
         }
     }
 
-    // Test to see if database connects with code
-    async newName() {
-
+    async deleteRowById(id) {
         try {
-        const response = await new Promise((resolve, reject) => {
-        const query = "INSERT INTO names (name, date_added) VALUES ('Jim', '09/10/1996');";
-        connection.query(query, (err, results) => {
-            if(err) reject(new Error(err.message));
-            resolve(results);
-        })
-    });
-
-    return response;
-
-}
-catch (error) {
-    console.log(error);
-}
+            id = parseInt(id,10);
+            const response = await new Promise((resolve, reject) => {
+            const query = "DELETE FROM names WHERE id = ?";
+            connection.query(query, [id], (err, result) => {
+                if(err) reject(new Error(err.message));
+                resolve(result.affectedRows); //resolve sends back value after promise. Result is just an object
+            })
+        });
+        console.log(response); 
+        return response === 1 ? true : false;
+        } catch (error) {
+            console.log("ERROR in DELETE")
+            return false; // if breaks return false and then handle in front end
+        }
     }
+
+    async updateNameById(id,name) {
+        try {
+            id = parseInt(id,10);
+            const response = await new Promise((resolve, reject) => {
+            const query = "UPDATE names set name = ? WHERE id = ?;";
+            connection.query(query, [name,id], (err, result) => {
+                if(err) reject(new Error(err.message));
+                resolve(result.affectedRows); //resolve sends back value after promise. Result is just an object
+            })
+        });
+        console.log(response); 
+        return response === 1 ? true : false;
+        } catch (error) {
+            console.log(error)
+            return false; // if breaks return false and then handle in front end
+        }
+    }
+//     async newName(name) {
+
+//         try {
+//         console.log(name);
+//         const dateAdded = new Date();
+//         const response = await new Promise((resolve, reject) => {
+//         const query = "INSERT INTO names (name, date_added) VALUES (?, ?);";
+//         connection.query(query, [name, dateAdded], (err, results) => {
+//             if(err) reject(new Error(err.message));
+//             resolve(results.response);
+//         })
+//     });
+
+//     return response;
+
+// }
+// catch (error) {
+//     console.log(error);
+// }
+//     }
 }
 
 module.exports = DbService; // can be used in other files

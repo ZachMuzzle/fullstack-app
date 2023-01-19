@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { response } = require('express');
+const { response, request } = require('express');
 dotenv.config();
 
 const database = require('./database');
@@ -18,10 +18,10 @@ app.post('/insert', (request,response) => {
     const {name}  = request.body // just grabs the name
     const db = DbService.getDbServiceInstance();
 
-    const result = db.newName(); /* Change this back to original this is for testing */
+    const result = db.insertNewName(name); /* Change this back to original this is for testing */
 
     result
-    .then(data => response.json({success: true}))
+    .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 });
 // read
@@ -35,7 +35,28 @@ app.get('/getAll', (request, response) => {
     .catch(err => console.log(err));
 });
 // update
+app.patch('/update', (request, response)=> {
+    // console.log(request.body)
+    const {id, name} = request.body;
+    const db = DbService.getDbServiceInstance();
 
+    const result = db.updateNameById(id, name);
+
+    result.then(data => response.json({success: data})) // response has name of 'success' filled with data
+    .catch(err => console.log(err));
+
+})
 // delete
+app.delete('/delete/:id', (request, response) => {
+    // console.log(request.params)
+    const {id} = request.params;
+    const db = DbService.getDbServiceInstance();
 
+    const result = db.deleteRowById(id);
+
+    result
+    .then(data => response.json({success: data}))
+    .catch(err => console.log(err));
+
+});
 app.listen(process.env.PORT, () => console.log("App is running"));
