@@ -1,3 +1,4 @@
+/* On webpage load calls getAll and loads data from sql or displays blank table. */
 document.addEventListener('DOMContentLoaded', function() {
     fetch('http://localhost:5000/getAll')
     .then(response => response.json())
@@ -78,7 +79,8 @@ addBtn.onclick = function() {
         body: JSON.stringify({name: name})
     })
     .then(response => response.json())
-    .then(data => insertRowIntoTable(data['data']));
+    .then(data => insertRowIntoTable(data['data']))
+    // .then(location.reload());
 
 }
 
@@ -88,7 +90,7 @@ function insertRowIntoTable(data) {
 
     let tableHtml = "<tr>";
     // object is returns so we need to loop through an object. Not an array
-
+    /* Loop through object until we hit date added. Then we can change the date format. */
     for (var key in data) {
         if (data.hasOwnProperty(key)) {
             if (key === 'dateAdded') {
@@ -109,11 +111,13 @@ function insertRowIntoTable(data) {
 
     if(isTableData) { // if no data exists
         table.tableHtml = tableHtml;
+        location.reload();
     }
 
     else { // create new row
         const newRow = table.insertRow();
         newRow.innerHTML = tableHtml;
+        location.reload();
     }
 }
 

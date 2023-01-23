@@ -8,3 +8,4 @@
 ### Things to maybe add
 - Update date for every updated item.
 - Delete/Truncate all the data button.
+- ~~Refresh site on name added.~~
