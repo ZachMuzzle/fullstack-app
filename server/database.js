@@ -98,12 +98,12 @@ class DbService {
         }
     }
 
-    async updateNameById(id,name) {
+    async updateNameById(id,name,date_added) {
         try {
             id = parseInt(id,10);
             const response = await new Promise((resolve, reject) => {
-            const query = "UPDATE names set name = ? WHERE id = ?;"; // helps with sql injection. [values go to ?. instead of typing them out]
-            connection.query(query, [name,id], (err, result) => {
+            const query = "UPDATE names set name = ?, date_added = ? WHERE id = ?;"; // helps with sql injection. [values go to ?. instead of typing them out]
+            connection.query(query, [name,date_added,id], (err, result) => {
                 if(err) reject(new Error(err.message));
                 resolve(result.affectedRows); //resolve sends back value after promise. Result is just an object
             })

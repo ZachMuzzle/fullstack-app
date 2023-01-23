@@ -6,6 +6,6 @@
 * Completed on 01/19/23
 
 ### Things to maybe add
-- Update date for every updated item.
-- Delete/Truncate all the data button.
-- ~~Refresh site on name added.~~
+- ~~Update date for every updated item.~~
+- ~~Delete/Truncate all the data button.~~
+- ~~Refresh site on name added.
