@@ -82,11 +82,27 @@ class DbService {
         }
     }
 
+    async truncateAllData(){
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = "TRUNCATE TABLE names;";
+                connection.query(query, (err, result) => {
+                    if(err) reject(new Error(err.message));
+                    resolve(result.affectedRows); //resolve sends back value after promise. Result is just an object
+                })
+            });
+            // console.log("RESPONSE TO TRUNCATE: " + JSON.stringify(response))
+            return response === 0 ? true : false;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async updateNameById(id,name) {
         try {
             id = parseInt(id,10);
             const response = await new Promise((resolve, reject) => {
-            const query = "UPDATE names set name = ? WHERE id = ?;";
+            const query = "UPDATE names set name = ? WHERE id = ?;"; // helps with sql injection. [values go to ?. instead of typing them out]
             connection.query(query, [name,id], (err, result) => {
                 if(err) reject(new Error(err.message));
                 resolve(result.affectedRows); //resolve sends back value after promise. Result is just an object
