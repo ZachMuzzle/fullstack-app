@@ -24,6 +24,16 @@ app.post('/insert', (request,response) => {
     .then(data => response.json({data: data}))
     .catch(err => console.log(err));
 });
+
+app.get('/truncate', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+
+    const result = db.truncateAllData();
+
+    result
+    .then(data => response.json({data:data}))
+    .catch(err => console.log(err));
+})
 // read
 // Only actives with URL has /getAll at end
 app.get('/getAll', (request, response) => {
@@ -46,7 +56,7 @@ app.patch('/update', (request, response)=> {
     .catch(err => console.log(err));
 
 })
-// delete
+// delete has to have an id to work.
 app.delete('/delete/:id', (request, response) => {
     // console.log(request.params)
     const {id} = request.params;
