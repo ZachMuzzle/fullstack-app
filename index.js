@@ -4,9 +4,30 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => loadHtmlTable(data['data']));
     // .then(data => console.log(data));
-    loadHtmlTable([]);
-});
+    // loadHtmlTable([]);  // not sure why this is added
 
+    fetch('http://localhost:5000/getAll')
+    .then(response => response.json())
+    .then(data => truncateData(data['data']));
+    
+});
+function truncateData(data) {
+    if(data.length === 0) {
+        return true;
+    }
+    const truncateBtn = document.querySelector('#truncate');
+    truncateBtn.hidden = false;
+
+    truncateBtn.onclick = function() {
+    fetch('http://localhost:5000/truncate')
+    .then(response => response.json())
+    .then(data => {
+        if(data.data) {
+            location.reload();
+        }
+    })
+    }
+}
 document.querySelector('table tbody').addEventListener('click', function(event) {
     console.log(event.target);
     if (event.target.className === "delete-row-btn") {
@@ -51,7 +72,8 @@ updateBtn.onclick = function() {
         },
         body: JSON.stringify({
             id: document.querySelector('#update-row-btn').dataset.id,
-            name: updateNameInput.value
+            name: updateNameInput.value,
+            date_added: new Date().toLocaleString()
         })
     })
     .then(response => response.json())
@@ -67,7 +89,7 @@ const addBtn = document.querySelector('#add-name-btn');
 addBtn.onclick = function() {
     const nameInput = document.querySelector('#name-input');
     const name = nameInput.value;
-    alert("Value: " + name + " was entered into database.")
+    alert("Value: " + name + " was entered into the database.")
     nameInput.value = "";
 
     // sends to backend

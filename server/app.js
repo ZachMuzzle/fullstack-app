@@ -47,10 +47,10 @@ app.get('/getAll', (request, response) => {
 // update
 app.patch('/update', (request, response)=> {
     // console.log(request.body)
-    const {id, name} = request.body;
+    const {id, name, date_added} = request.body;
     const db = DbService.getDbServiceInstance();
 
-    const result = db.updateNameById(id, name);
+    const result = db.updateNameById(id, name,date_added);
 
     result.then(data => response.json({success: data})) // response has name of 'success' filled with data
     .catch(err => console.log(err));
