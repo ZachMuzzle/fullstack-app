@@ -157,7 +157,7 @@ function loadHtmlTable(data) {
     data.forEach(function({id, name, date_added}) {
         tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`;
-        tableHtml += `<td>${name}</td>`;
+        tableHtml += `<td class="name-value">${name}</td>`;
         tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`
         tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`
         tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`
@@ -165,4 +165,40 @@ function loadHtmlTable(data) {
     });
 
     table.innerHTML = tableHtml;
+}
+
+const searchBar = document.querySelector('#search-btn');
+
+searchBar.onclick = function() {
+    const searchInput = document.querySelector('#search-input');
+    const searchValue = searchInput.value;
+    // console.log(searchValue)
+    searchInput.value = "";
+
+    fetch('http://localhost:5000/getAll')
+    .then(response => response.json())
+    .then(data => checkForNameMatch(data['data'],searchValue));
+
+
+}
+/* Checks for name match from database with input name and if so changes background to yellow */
+function checkForNameMatch(data, searchValue) {
+    const nameYellow = document.querySelectorAll(".name-value");
+    const nameYellowValue = document.querySelectorAll(".name-value");
+
+    data.forEach(function({name}) {
+        if(name === searchValue) {
+        for(i = 0; i < nameYellow.length; i++) {
+            // console.log("Value of class: " + nameYellowValue[i].innerHTML);
+            if(nameYellowValue[i].innerHTML === searchValue) {
+                
+            nameYellow[i].style.backgroundColor = "yellow";
+            }
+        }
+        } 
+        else {
+
+            console.log('Wrong') /* Prints even with if statement triggered. May need to change from a forEach */
+        }
+    });
 }
