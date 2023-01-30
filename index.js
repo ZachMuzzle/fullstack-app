@@ -193,6 +193,7 @@ function checkForNameMatch(data, searchValue) {
             if(nameYellowValue[i].innerHTML === searchValue) {
                 
             nameYellow[i].style.backgroundColor = "yellow";
+            document.querySelector('#clear-btn').hidden = false
             }
         }
         } 
@@ -201,4 +202,20 @@ function checkForNameMatch(data, searchValue) {
             console.log('Wrong') /* Prints even with if statement triggered. May need to change from a forEach */
         }
     });
+}
+
+/* Clear button for searches that show yellow */
+const clearSearchButton = document.querySelector('#clear-btn');
+
+clearSearchButton.onclick = function() {
+    const nameYellow = document.querySelectorAll(".name-value");
+    const nameYellowValue = document.querySelectorAll(".name-value");
+
+    for(i = 0; i < nameYellow.length; i++) {
+        if(nameYellowValue[i].style.backgroundColor === 'yellow') {
+            nameYellowValue[i].style.backgroundColor = '';
+        }
+    }
+    document.querySelector('#clear-btn').hidden = true;
+
 }
