@@ -1,5 +1,17 @@
+
+html {
+    font-size: 100%;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    /* inherit values from parent element */
+    box-sizing: inherit; 
+    margin: 0;
+    padding: 0;
+}
 main {
-    width: 50%;
+    width: 100%;
     margin: 50px auto;
     text-align: center;
 }
@@ -15,4 +27,56 @@ table, th, td {
 
 th,td {
     padding: 5px;
+}
+
+/* NAV BAR STYLES */
+.nav-bar {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(51, 86, 131);
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.search-container {
+    padding: 5px;
+    float: right;
+}
+
+.search-container > button {
+    font-size: 15px;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    background-color: rgb(138, 129, 129);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.search-container > button:hover {
+    font-size: 15px;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    background-color: rgb(182, 173, 173);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.search-container > input {
+    padding: 5px;
+}
+.search-container > input:focus {
+    outline: 2px solid rgb(138, 129, 129);
+}
+
+.nav-bar > li {
+    color: white;
+    padding: 10px;
+    float: left;
 }
