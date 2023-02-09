@@ -1,19 +1,23 @@
-
-html {
-    font-size: 100%;
-    box-sizing: border-box;
-}
-
 *, *::before, *::after {
     /* inherit values from parent element */
     box-sizing: inherit; 
     margin: 0;
     padding: 0;
 }
+
+html,body {
+    font-size: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+    height: 100%;
+    background-color: rgb(149, 184, 229);
+}
+
 main {
     width: 100%;
     margin: 50px auto;
     text-align: center;
+    min-height: 100%;
 }
 
 table {
@@ -62,7 +66,6 @@ th,td {
     font-size: 15px;
     border: none;
     color: white;
-    padding: 5px 5px;
     background-color: rgb(182, 173, 173);
     cursor: pointer;
     text-decoration: none;
@@ -79,4 +82,58 @@ th,td {
     color: white;
     padding: 10px;
     float: left;
+}
+
+/* Name Input Styles */
+.nameInput {
+    padding-top: 10px;
+
+}
+
+.nameInput > button {
+    font-size: 15px;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    background-color: rgb(138, 129, 129);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nameInput > button:hover {
+    font-size: 15px;
+    border: none;
+    color: white;
+    background-color: rgb(182, 173, 173);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nameInput > input {
+    padding: 5px;
+}
+
+.nameInput > input:focus {
+    outline: 2px solid rgb(138, 129, 129);
+}
+
+/* Delete Button Styles */
+.truncate-btn {
+    font-size: 15px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 5px 5px;
+    background-color: rgb(138, 129, 129);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.truncate-btn:hover {
+    font-size: 15px;
+    border: none;
+    color: white;
+    background-color: rgb(182, 173, 173);
+    cursor: pointer;
+    text-decoration: none;
 }
