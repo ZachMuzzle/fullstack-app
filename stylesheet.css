@@ -21,7 +21,7 @@ main {
 }
 
 table {
-    margin: 50px auto;
+    margin: 25px auto;
 }
 
 table, th, td {
@@ -118,6 +118,10 @@ th,td {
 }
 
 /* Delete Button Styles */
+
+.button-container {
+    margin-top: 20px;
+}
 .truncate-btn {
     font-size: 15px;
     border: none;
@@ -136,4 +140,50 @@ th,td {
     background-color: rgb(182, 173, 173);
     cursor: pointer;
     text-decoration: none;
+}
+
+/* Table Color Styling */
+
+table tr:nth-child(even) {
+    background-color: rgb(136, 174, 245);
+}
+
+table tr:hover {
+    background-color: rgb(101, 147, 233);
+}
+
+table th {
+    padding: 10px;
+    background-color:rgb(231, 231, 231);
+}
+
+/*  Edit Name Styling */
+
+#update-row > button {
+
+    font-size: 15px;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    background-color: rgb(138, 129, 129);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#update-row > button:hover {
+
+    font-size: 15px;
+    border: none;
+    color: white;
+    background-color: rgb(182, 173, 173);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#update-row > input {
+    padding: 5px;
+}
+
+#update-row > input:focus {
+    outline: 2px solid rgb(138, 129, 129);
 }
