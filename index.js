@@ -84,6 +84,33 @@ updateBtn.onclick = function() {
     });
 }
 
+const updateNameInput = document.querySelector('#update-name-input');
+
+updateNameInput.addEventListener("keypress", function(event) {
+    if(event.key === "Enter") {
+        event.preventDefault();
+
+        fetch('http://localhost:5000/update', {
+            method: 'PATCH',
+            headers: {
+                'Content-type' : 'application/json'
+            },
+            body: JSON.stringify({
+                id: document.querySelector('#update-row-btn').dataset.id,
+                name: updateNameInput.value,
+                date_added: new Date().toLocaleString()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                location.reload();
+            }
+        });
+}
+
+});
+
 const addBtn = document.querySelector('#add-name-btn');
 
 addBtn.onclick = function() {
@@ -105,6 +132,30 @@ addBtn.onclick = function() {
     // .then(location.reload());
 
 }
+
+const nameInputEnter = document.querySelector("#name-input");
+
+nameInputEnter.addEventListener("keypress", function(event) {
+    if(event.key === "Enter") {
+        event.preventDefault();
+        console.log("TEST")
+        const name = nameInputEnter.value;
+        alert("Value: " + name + " was entered into the database.")
+        nameInputEnter.value = "";
+    
+        // sends to backend
+        fetch('http://localhost:5000/insert', {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({name: name})
+        })
+        .then(response => response.json())
+        .then(data => insertRowIntoTable(data['data']))
+        
+    }
+})
 
 function insertRowIntoTable(data) {
     const table = document.querySelector('table tbody');
@@ -166,7 +217,7 @@ function loadHtmlTable(data) {
 
     table.innerHTML = tableHtml;
 }
-
+/* Search bar functionality */
 const searchBar = document.querySelector('#search-btn');
 
 searchBar.onclick = function() {
@@ -181,6 +232,24 @@ searchBar.onclick = function() {
 
 
 }
+
+/* Code for using enter button on keyboard instead of button click */
+const inputValue = document.querySelector('#search-input');
+inputValue.addEventListener("keypress", function(event) {
+    
+    if(event.key === "Enter") {
+        
+        event.preventDefault(); // Used for canceling action??
+
+        const inputValueStore = inputValue.value;
+        inputValue.value = "";
+
+        fetch('http://localhost:5000/getAll')
+        .then(response => response.json())
+        .then(data => checkForNameMatch(data['data'],inputValueStore));
+    }
+});
+
 /* Checks for name match from database with input name and if so changes background to yellow */
 function checkForNameMatch(data, searchValue) {
     const nameYellow = document.querySelectorAll(".name-value");
