@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => truncateData(data['data']));
     
 });
+
 function truncateData(data) {
     if(data.length === 0) {
         return true;
@@ -113,24 +114,65 @@ updateNameInput.addEventListener("keypress", function(event) {
 
 const addBtn = document.querySelector('#add-name-btn');
 
-addBtn.onclick = function() {
+addBtn.onclick = async function() {
     const nameInput = document.querySelector('#name-input');
     const name = nameInput.value;
-    alert("Value: " + name + " was entered into the database.")
+    var testName = false; 
     nameInput.value = "";
 
-    // sends to backend
-    fetch('http://localhost:5000/insert', {
-        headers: {
-            'Content-type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({name: name})
-    })
-    .then(response => response.json())
-    .then(data => insertRowIntoTable(data['data']))
-    // .then(location.reload());
+    try {
+        await passData().then(test => {
+            console.log(test[0].name)
+            var i = 0;
+            for(i = 0; i < test.length; i++) {
+                if(test[i].name.toLowerCase() === name.toLowerCase()) {
+                    /* Abort */
+                    testName = true;
+                    console.log(testName);
+                }
+            }
+        });
+    }
+    catch(err) {
+        console.log(err)
+    }
+    checkName(testName, name, nameInput)
+    /* Below is what I used before I used async/await */
+    // .then(checkName(testName,name,nameInput));
+}
 
+async function passData() {
+    try {
+    const response = await fetch('http://localhost:5000/getAll')
+    const test = await response.json();
+    return test['data']
+    }
+    catch(err) {
+        console.log(err)
+    }
+}
+
+function checkName(testName,name,nameInput) {
+
+    if(testName === false) {
+        alert("Value: " + name + " was entered into the database.")
+        nameInput.value = "";
+
+        // sends to backend
+        fetch('http://localhost:5000/insert', {
+            headers: {
+                'Content-type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify({name: name})
+        })
+        .then(response => response.json())
+        .then(data => insertRowIntoTable(data['data']))
+    }
+    else {
+        alert("This name is not accepted because it already exists in the database. \
+        please try again.")
+    }
 }
 
 const nameInputEnter = document.querySelector("#name-input");
