@@ -62,34 +62,65 @@ function handleEditRow(id) {
     document.querySelector('#update-row-btn').dataset.id = id;
 
 }
-
-updateBtn.onclick = function() {
+/* Update name section for button and key press */
+updateBtn.onclick = async function() {
     const updateNameInput = document.querySelector('#update-name-input');
-    // console.log(updateNameInput);
-    fetch('http://localhost:5000/update', {
-        method: 'PATCH',
-        headers: {
-            'Content-type' : 'application/json'
-        },
-        body: JSON.stringify({
-            id: document.querySelector('#update-row-btn').dataset.id,
-            name: updateNameInput.value,
-            date_added: new Date().toLocaleString()
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            location.reload();
-        }
-    });
+    const nameValue = updateNameInput.value;
+    var testName = false;
+    updateNameInput.value = "";
+
+    try {
+        await passData().then(test => {
+            console.log(test[0].name)
+            var i = 0;
+            for(i = 0; i < test.length; i++) {
+                if(test[i].name.toLowerCase() === nameValue.toLowerCase()) {
+                    /* Abort */
+                    testName = true;
+                    console.log(testName);
+                }
+            }
+        });
+    }
+    catch(err) {
+        console.log(err)
+    }
+    updateCheckName(testName,nameValue)
 }
 
 const updateNameInput = document.querySelector('#update-name-input');
 
-updateNameInput.addEventListener("keypress", function(event) {
+updateNameInput.addEventListener("keypress", async function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
+        const nameValue = updateNameInput.value;
+        var testName = false;
+        updateNameInput.value = "";
+
+        try {
+            await passData().then(test => {
+                console.log(test[0].name)
+                var i = 0;
+                for(i = 0; i < test.length; i++) {
+                    if(test[i].name.toLowerCase() === nameValue.toLowerCase()) {
+                        /* Abort */
+                        testName = true;
+                        console.log(testName);
+                    }
+                }
+            });
+        }
+        catch(err) {
+            console.log(err)
+        }
+        
+    updateCheckName(testName,nameValue)
+}
+
+});
+
+function updateCheckName(testName,nameValue) {
+    if(testName === false) {
 
         fetch('http://localhost:5000/update', {
             method: 'PATCH',
@@ -98,7 +129,7 @@ updateNameInput.addEventListener("keypress", function(event) {
             },
             body: JSON.stringify({
                 id: document.querySelector('#update-row-btn').dataset.id,
-                name: updateNameInput.value,
+                name: nameValue,
                 date_added: new Date().toLocaleString()
             })
         })
@@ -108,10 +139,15 @@ updateNameInput.addEventListener("keypress", function(event) {
                 location.reload();
             }
         });
+    }
+
+    else {
+        alert("This name is not accepted because it already exists in the database. \
+        please try again.")
+    }
 }
 
-});
-
+/* Add name section button and enter key press */
 const addBtn = document.querySelector('#add-name-btn');
 
 addBtn.onclick = async function() {
