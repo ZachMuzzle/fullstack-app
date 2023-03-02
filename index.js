@@ -66,6 +66,12 @@ function handleEditRow(id) {
 updateBtn.onclick = async function() {
     const updateNameInput = document.querySelector('#update-name-input');
     const nameValue = updateNameInput.value;
+    if(nameValue === "") {
+        alert("Please don't leave blank and try again");
+    }
+    else {
+
+    
     var testName = false;
     updateNameInput.value = "";
 
@@ -85,13 +91,14 @@ updateBtn.onclick = async function() {
     catch(err) {
         console.log(err)
     }
-    updateCheckName(testName,nameValue)
+    updateCheckName(testName,nameValue) 
+}
 }
 
 const updateNameInput = document.querySelector('#update-name-input');
 
 updateNameInput.addEventListener("keypress", async function(event) {
-    if(event.key === "Enter") {
+    if(event.key === "Enter" && updateNameInput.value !== "") {
         event.preventDefault();
         const nameValue = updateNameInput.value;
         var testName = false;
@@ -115,6 +122,10 @@ updateNameInput.addEventListener("keypress", async function(event) {
         }
         
     updateCheckName(testName,nameValue)
+}
+else if (event.key === "Enter" && updateNameInput.value === "")
+{
+    alert("Please don't leave blank and try again");
 }
 
 });
@@ -153,6 +164,13 @@ const addBtn = document.querySelector('#add-name-btn');
 addBtn.onclick = async function() {
     const nameInput = document.querySelector('#name-input');
     const name = nameInput.value;
+    if (name === "") {
+        alert("Please don't leave blank and try again");
+    }
+
+    else {
+
+    
     var testName = false; 
     nameInput.value = "";
 
@@ -173,6 +191,7 @@ addBtn.onclick = async function() {
         console.log(err)
     }
     checkName(testName, name, nameInput)
+}
     /* Below is what I used before I used async/await */
     // .then(checkName(testName,name,nameInput));
 }
@@ -215,7 +234,7 @@ function checkName(testName,name,nameInput) {
 const nameInputEnter = document.querySelector("#name-input");
 
 nameInputEnter.addEventListener("keypress", async function(event) {
-    if(event.key === "Enter") {
+    if(event.key === "Enter" && nameInputEnter.value !== "") {
         event.preventDefault();
         const name = nameInputEnter.value;
         var testName = false; 
@@ -240,6 +259,10 @@ nameInputEnter.addEventListener("keypress", async function(event) {
 
     checkName(testName, name, nameInputEnter);
 
+    }
+    else if (event.key === "Enter" && nameInputEnter.value === "")
+    {
+        alert("Please don't leave blank and try again");
     }
 });
 
