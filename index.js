@@ -175,29 +175,37 @@ function checkName(testName,name,nameInput) {
     }
 }
 
+/* ENTER KEY PRESS FOR ADDING NAME */
 const nameInputEnter = document.querySelector("#name-input");
 
-nameInputEnter.addEventListener("keypress", function(event) {
+nameInputEnter.addEventListener("keypress", async function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
-        console.log("TEST")
         const name = nameInputEnter.value;
-        alert("Value: " + name + " was entered into the database.")
+        var testName = false; 
         nameInputEnter.value = "";
-    
-        // sends to backend
-        fetch('http://localhost:5000/insert', {
-            headers: {
-                'Content-type': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify({name: name})
-        })
-        .then(response => response.json())
-        .then(data => insertRowIntoTable(data['data']))
-        
+
+        try {
+            await passData().then(test => {
+                console.log(test[0].name)
+                var i = 0;
+                for(i = 0; i < test.length; i++) {
+                    if(test[i].name.toLowerCase() === name.toLowerCase()) {
+                        /* Abort */
+                        testName = true;
+                        console.log(testName);
+                    }
+                }
+            });
+        }
+        catch(err) {
+            console.log(err)
+        }
+
+    checkName(testName, name, nameInputEnter);
+
     }
-})
+});
 
 function insertRowIntoTable(data) {
     const table = document.querySelector('table tbody');
