@@ -67,7 +67,8 @@ updateBtn.onclick = async function() {
     const updateNameInput = document.querySelector('#update-name-input');
     const nameValue = updateNameInput.value;
     if(nameValue === "") {
-        alert("Please don't leave blank and try again");
+        var text = "Please don't leave blank and try again"
+        modalDisplayAlert(text);
     }
     else {
 
@@ -125,14 +126,20 @@ updateNameInput.addEventListener("keypress", async function(event) {
 }
 else if (event.key === "Enter" && updateNameInput.value === "")
 {
-    alert("Please don't leave blank and try again");
+    var text = "Please don't leave blank and try again"
+    modalDisplayAlert(text)
 }
 
 });
 
-function updateCheckName(testName,nameValue) {
+async function updateCheckName(testName,nameValue) {
     if(testName === false) {
 
+        var text = "Value: " + nameValue + " was updated into the database."
+        var funValue = await modalDisplayAlert(text);
+        nameValue.value = "";
+
+        if(funValue === true) {
         fetch('http://localhost:5000/update', {
             method: 'PATCH',
             headers: {
@@ -151,10 +158,11 @@ function updateCheckName(testName,nameValue) {
             }
         });
     }
-
+    }
     else {
-        alert("This name is not accepted because it already exists in the database. \
-        please try again.")
+        var text = "This name is not accepted because it already exists in the database. \
+        please try again"
+        modalDisplayAlert(text)
     }
 }
 
@@ -165,7 +173,8 @@ addBtn.onclick = async function() {
     const nameInput = document.querySelector('#name-input');
     const name = nameInput.value;
     if (name === "") {
-        alert("Please don't leave blank and try again");
+        var text = "Please don't leave blank and try again";
+        modalDisplayAlert(text)
     }
 
     else {
@@ -182,7 +191,7 @@ addBtn.onclick = async function() {
                 if(test[i].name.toLowerCase() === name.toLowerCase()) {
                     /* Abort */
                     testName = true;
-                    console.log(testName);
+                    // console.log(testName);
                 }
             }
         });
@@ -207,13 +216,16 @@ async function passData() {
     }
 }
 
-function checkName(testName,name,nameInput) {
+async function checkName(testName,name,nameInput) {
 
     if(testName === false) {
-        alert("Value: " + name + " was entered into the database.")
-        nameInput.value = "";
 
+        var text = "Value: " + name + " was entered into the database."
+        var funValue = await modalDisplayAlert(text);
+        nameInput.value = "";
+        /* Might need to cut into two parts so return value will be received */
         // sends to backend
+        if(funValue === true) {
         fetch('http://localhost:5000/insert', {
             headers: {
                 'Content-type': 'application/json'
@@ -224,10 +236,39 @@ function checkName(testName,name,nameInput) {
         .then(response => response.json())
         .then(data => insertRowIntoTable(data['data']))
     }
+
+
+}
     else {
-        alert("This name is not accepted because it already exists in the database. \
-        please try again.")
+        var text = "This name is not accepted because it already exists in the database. \
+        Please try again."
+        await modalDisplayAlert(text);
     }
+}
+
+/* Modal pop up for alert */
+function modalDisplayAlert(text) {
+    var modal = document.querySelector("#my_modal");
+    var span = document.querySelectorAll(".close")[0]
+    document.querySelectorAll(".modal_text")[0].innerHTML = text;
+    modal.style.display = "block";
+    /* We wait for one of these to be clicked before continuing :)  */
+    return new Promise((resolve) => {
+
+    span.onclick = function() {
+        modal.style.display = "none";
+        resolve(true)
+    }
+
+    window.onclick = function(event) {
+        if(event.target == modal) {
+            modal.style.display = "none";
+        }
+        resolve(true)
+    }
+})
+
+    // return true
 }
 
 /* ENTER KEY PRESS FOR ADDING NAME */
@@ -262,7 +303,8 @@ nameInputEnter.addEventListener("keypress", async function(event) {
     }
     else if (event.key === "Enter" && nameInputEnter.value === "")
     {
-        alert("Please don't leave blank and try again");
+        var text = "Please don't leave blank and try again"
+        modalDisplayAlert(text)
     }
 });
 
