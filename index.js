@@ -417,10 +417,10 @@ function checkForNameMatch(data, searchValue) {
             }
         }
         } 
-        else {
+        // else {
 
-            console.log('Wrong') /* Prints even with if statement triggered. May need to change from a forEach */
-        }
+        //     console.log('Wrong') /* Prints even with if statement triggered. May need to change from a forEach */
+        // }
     });
 }
 
